@@ -1,5 +1,4 @@
 import './App.css';
-import Login from './login/Login';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
