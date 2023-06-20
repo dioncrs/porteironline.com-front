@@ -1,5 +1,7 @@
 import './App.css';
 import { initializeApp } from "firebase/app";
+import { LoginPage } from './pages/login/login-page';
+import { MainPage } from './pages/main/main-page';
 
 function App(props) {
   const firebaseConfig = {
@@ -15,10 +17,10 @@ function App(props) {
   initializeApp(firebaseConfig);
 
   if (props.isLoggedIn) {
-    return <h1>Bem vindo!</h1>;
+    return <MainPage/>;
   }
   else{
-    return <h1>Faça Login</h1>;
+    return <LoginPage/>;
   }
 }
 
