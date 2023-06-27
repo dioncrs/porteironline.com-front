@@ -1,37 +1,35 @@
 import React from "react"
-import { Button, Card, CardContent, Typography, CardActions } from "@mui/material"
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import {TextField} from "@mui/material";
+import {Button} from "@mui/material";
 export function LoginPage () {
     const var1 = 'Teste'
 
-    return (
-        <>
-        <h1>Bem vindo {var1} a pagina de login!</h1>
-        <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          benevolent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-      <Button variant="outlined" startIcon={<DeleteIcon />}>
-  Delete
-</Button>
-      </CardActions>
-    </Card>
+    return (   
+      <div className="container">
+        <div className="container-login">
+          <div className="wrap-login">
+            <form className="login-form">
 
-        </>
-    )
+              <span className="login-form-title"> Login </span>
+                
+              <div className="wrap-input">
+                <TextField id="standard-basic" label="Email" variant="standard" />          
+              </div>
+
+              <div className="wrap-input">
+                <TextField id="standard-basic" label="Senha" variant="standard" />                
+              </div>
+
+              <div className="container-login-btn">
+                <Button variant="contained">ENTRAR</Button>
+              </div>
+              <div className="cadastre sua empresa">
+                <spam className="txt1"> cadastre sua empresa </spam>
+                <a className="txt2" href="#">aqui</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
 }
