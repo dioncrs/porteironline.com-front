@@ -7,6 +7,8 @@ export function LoginPage () {
 
     return (
         <>
+
+        
         <h1>Bem vindo {var1} a pagina de login!</h1>
         <Card sx={{ minWidth: 275 }}>
       <CardContent>
