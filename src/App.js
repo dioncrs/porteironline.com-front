@@ -1,7 +1,8 @@
-import './App.css';
+import "./App.css";
 import { initializeApp } from "firebase/app";
-import { LoginPage } from './pages/login/login-page';
-import { MainPage } from './pages/main/main-page';
+//import { LoginPage } from "./pages/login/login-page";
+import { MainPage } from "./pages/main/main-page";
+import { RegisterPage } from "./pages/register/register-page";
 
 function App(props) {
   const firebaseConfig = {
@@ -10,23 +11,17 @@ function App(props) {
     projectId: "porteironline",
     storageBucket: "porteironline.appspot.com",
     messagingSenderId: "1086883921782",
-    appId: "1:1086883921782:web:29c653307c35a8481ac457"
+    appId: "1:1086883921782:web:29c653307c35a8481ac457",
   };
-  
+
   // Initialize Firebase
   initializeApp(firebaseConfig);
 
   if (props.isLoggedIn) {
-    return <MainPage/>;
-  }
-  else{
-    return <LoginPage/>;
+    return <MainPage />;
+  } else {
+    return <RegisterPage/>;
   }
 }
 
 export default App;
-
-
-
-
-
