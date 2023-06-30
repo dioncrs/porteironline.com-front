@@ -55,7 +55,7 @@ export function LoginPage () {
     );
     return (
       <Box
-        sx={{display: "flex", justifyContent: "center", alignItems: "center",minHeight: "100vh",width: 400, }}>
+        sx={{display: "flex", justifyContent: "center", alignItems: "center",minHeight: "80vh",width: 400, }}>
         <Card
          variant="outlined"sx={{ transformStyle: "preserve-3d",boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.3)",}}>
           {card}
