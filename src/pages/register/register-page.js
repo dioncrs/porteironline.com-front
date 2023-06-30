@@ -6,7 +6,6 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
-import VerifiedUserTwoToneIcon from "@mui/icons-material/VerifiedUserTwoTone";
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,6 +15,7 @@ import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import LockTwoToneIcon from "@mui/icons-material/LockTwoTone";
 import PlaceTwoToneIcon from "@mui/icons-material/PlaceTwoTone";
+import { Loogotipo } from "../../components/Logotipo";
 
 export function RegisterPage() {
   const [age, setAge] = React.useState("");
@@ -82,14 +82,7 @@ export function RegisterPage() {
   const card = (
     <React.Fragment>
       <CardContent style={{ color: "#424242" }}>
-        <Box sx={{ display: "flex",alignItems: "center",justifyContent: "center", gap: "8px",width: "100%",}}>
-          <Icon>
-            <VerifiedUserTwoToneIcon style={{ color: "#81c784" }} fontSize="100px"/>
-          </Icon>
-          <Typography variant="h7"style={{ color: "#757575" }}fontWeight="bold"component="div">
-            Portaria.org
-          </Typography>
-        </Box>
+        <Loogotipo/>
         <br />
         <Typography sx={{display: "flex",alignItems: "center",justifyContent: "center",}}style={{ color: "#757575" }}
                      fontWeight="bold" variant="h6"component="div">
