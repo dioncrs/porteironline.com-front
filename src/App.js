@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 //import { LoginPage } from "./pages/login/login-page";
 import { MainPage } from "./pages/main/main-page";
 import { RegisterPage } from "./pages/register/register-page";
+import { Box, Container, CssBaseline} from "@mui/material"
 
 function App(props) {
   const firebaseConfig = {
@@ -18,9 +19,27 @@ function App(props) {
   initializeApp(firebaseConfig);
 
   if (props.isLoggedIn) {
-    return <MainPage />;
+    return <Container component="main" maxWidth="xs">
+    <CssBaseline />
+    <Box
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    ><MainPage /></Box></Container>;
   } else {
-    return <RegisterPage/>;
+    return <Container component="main" maxWidth="xs">
+    <CssBaseline />
+    <Box
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    ><RegisterPage/></Box></Container>;
   }
 }
 
