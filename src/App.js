@@ -4,6 +4,7 @@ import { initializeApp } from "firebase/app";
 import { MainPage } from "./pages/main/main-page";
 import { RegisterPage } from "./pages/register/register-page";
 import { Box, Container, CssBaseline} from "@mui/material"
+import { LoginPage } from "./pages/login/login-page";
 
 function App(props) {
   const firebaseConfig = {
@@ -39,7 +40,7 @@ function App(props) {
         flexDirection: 'column',
         alignItems: 'center',
       }}
-    ><RegisterPage/></Box></Container>;
+    ><LoginPage/></Box></Container>;
   }
 }
 
