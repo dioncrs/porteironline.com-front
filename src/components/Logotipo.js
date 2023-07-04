@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, Icon, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUserOutlined';
-import VerifiedUserOutlinedIcon from '@mui/icons-material/VerifiedUserOutlined';
 
 export function Loogotipo() {
     return(
