@@ -4,14 +4,14 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import TextField from "@mui/material/TextField";
-import {Button, Typography} from "@mui/material";
+import {Button, Typography, Container, CssBaseline} from "@mui/material";
 import Icon from "@mui/material/Icon";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LockIcon from '@mui/icons-material/Lock';
 import { Loogotipo } from "../../components/Logotipo";
+import { Link } from "react-router-dom";
 
 export function LoginPage () {
-
     const card = (   
       <Card variant="elevation" sx={{ maxWidth: 700,}} className="container">
         <CardContent>
@@ -39,9 +39,9 @@ export function LoginPage () {
          <br/>
         </CardContent>
          <CardActions>
-          <Button>Cadastre sua empresa</Button>
+          <Button><Link to="/cadastro">Cadastre sua empresa</Link></Button>
           <Box sx={{ marginLeft: "auto" }}>
-          <Button href="" variant="contained">
+          <Button  variant="contained">
             Entrar
           </Button>
         </Box>
@@ -49,12 +49,23 @@ export function LoginPage () {
       </Card>
     );
     return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
       <Box
-        sx={{display: "flex", justifyContent: "center", alignItems: "center",minHeight: "80vh",width: 400, }}>
-        <Card
-         variant="outlined"sx={{ transformStyle: "preserve-3d",boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.3)",}}>
-          {card}
-        </Card>
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      ><Box sx={{display: "flex", justifyContent: "center", alignItems: "center",minHeight: "80vh",width: 400, }}>
+          <Card
+          variant="outlined"sx={{ transformStyle: "preserve-3d",boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.3)",}}>
+            {card}
+          </Card>
+        </Box>
       </Box>
+    </Container>
+      
     );
 }

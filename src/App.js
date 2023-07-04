@@ -1,8 +1,13 @@
 import "./App.css";
 import { initializeApp } from "firebase/app";
-import { MainPage } from "./pages/main/main-page";
-import { Box, Container, CssBaseline} from "@mui/material"
 import { LoginPage } from "./pages/login/login-page";
+import { RegisterPage } from "./pages/register/register-page";
+import {
+  Routes,
+  Route
+} from "react-router-dom";
+
+
 
 function App(props) {
   const firebaseConfig = {
@@ -17,29 +22,14 @@ function App(props) {
   // Initialize Firebase
   initializeApp(firebaseConfig);
 
-  if (props.isLoggedIn) {
-    return <Container component="main" maxWidth="xs">
-    <CssBaseline />
-    <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    ><MainPage /></Box></Container>;
-  } else {
-    return <Container component="main" maxWidth="xs">
-    <CssBaseline />
-    <Box
-      sx={{
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    ><LoginPage/></Box></Container>;
-  }
+  return (
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/cadastro" element={<RegisterPage />} />      
+    </Routes>
+  )
+
 }
 
 export default App;
