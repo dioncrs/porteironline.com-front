@@ -1,8 +1,6 @@
 import "./App.css";
 import { initializeApp } from "firebase/app";
-//import { LoginPage } from "./pages/login/login-page";
 import { MainPage } from "./pages/main/main-page";
-import { RegisterPage } from "./pages/register/register-page";
 import { Box, Container, CssBaseline} from "@mui/material"
 import { LoginPage } from "./pages/login/login-page";
 
