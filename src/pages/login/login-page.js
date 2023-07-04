@@ -12,11 +12,6 @@ import { Loogotipo } from "../../components/Logotipo";
 
 export function LoginPage () {
 
-  
-    const var1 = 'Teste'
-    
-    
-
     const card = (   
       <Card variant="elevation" sx={{ maxWidth: 700,}} className="container">
         <CardContent>
