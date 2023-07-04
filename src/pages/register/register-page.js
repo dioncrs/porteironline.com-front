@@ -16,6 +16,8 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import LockTwoToneIcon from "@mui/icons-material/LockTwoTone";
 import PlaceTwoToneIcon from "@mui/icons-material/PlaceTwoTone";
 import { Loogotipo } from "../../components/Logotipo";
+import {Container, CssBaseline} from "@mui/material";
+import { Link } from "react-router-dom";
 
 export function RegisterPage() {
   const [age, setAge] = React.useState("");
@@ -180,8 +182,10 @@ export function RegisterPage() {
         <br />
       </CardContent>
       <CardActions>
-        <Button href="" size="small">
-          Faça login em vez disso
+        <Button size="small">
+            <Link to="/login">
+              Faça login em vez disso
+              </Link>
         </Button>
         <Box sx={{ marginLeft: "auto" }}>
           <Button href="" variant="contained">
@@ -193,6 +197,16 @@ export function RegisterPage() {
   );
 
   return (
+    <Container component="main" maxWidth="xs">
+    <CssBaseline />
+    <Box
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
     <Box
       sx={{display: "flex", justifyContent: "center", alignItems: "center",minHeight: "100vh",width: 400, }}>
       <Card
@@ -200,5 +214,7 @@ export function RegisterPage() {
         {card}
       </Card>
     </Box>
+    </Box>
+    </Container>
   );
 }
