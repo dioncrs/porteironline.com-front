@@ -11,7 +11,26 @@ import LockIcon from '@mui/icons-material/Lock';
 import { Loogotipo } from "../../components/Logotipo";
 import { Link } from "react-router-dom";
 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
 export function LoginPage () {
+const [email, setEmail] = React.useState("");
+const [password, setPassword] = React.useState("");
+
+const verfiricar_ep=()=>{
+  const auth = getAuth();
+  signInWithEmailAndPassword(auth, email, password) 
+  .then((userCredential) => {
+
+    const user = userCredential.user;
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+  return;
+}
     const card = (   
       <Card variant="elevation" sx={{ maxWidth: 700,}} className="container">
         <CardContent>
@@ -24,7 +43,11 @@ export function LoginPage () {
             < AccountCircleIcon sx={{fontSize: 26}}/>
           </Icon>
           <Typography variant="body2">
-            <TextField sx={{ minWidth: 328 }} id="standard-basic" label="Email" variant="standard"/>           
+            <TextField value={email}
+            onChange={(event) => {
+              setEmail(event.target.value);
+            }}
+            sx={{ minWidth: 328 }} id="standard-basic" label="Email" variant="standard"/>           
           </Typography>
         </Box>
          <br/>
@@ -33,7 +56,11 @@ export function LoginPage () {
             < LockIcon sx={{fontSize: 26}}/>
           </Icon>
           <Typography variant="body2">
-            <TextField sx={{ minWidth: 328 }} id="standard-basic" label="Senha" variant="standard"/>           
+            <TextField value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+            sx={{ minWidth: 328 }} id="standard-basic" label="Senha" variant="standard"/>           
           </Typography>
         </Box>
          <br/>
@@ -41,7 +68,8 @@ export function LoginPage () {
          <CardActions>
           <Button><Link to="/cadastro">Cadastre sua empresa</Link></Button>
           <Box sx={{ marginLeft: "auto" }}>
-          <Button  variant="contained">
+          <Button onClick={verfiricar_ep}           
+            variant="contained">
             Entrar
           </Button>
         </Box>
