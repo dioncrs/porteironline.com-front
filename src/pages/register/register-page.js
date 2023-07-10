@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Loogotipo } from "../../components/Logotipo";
+
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import CardActions from "@mui/material/CardActions";
@@ -7,41 +11,25 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Icon from "@mui/material/Icon";
 import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircleTwoTone";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import LockTwoToneIcon from "@mui/icons-material/LockTwoTone";
-import PlaceTwoToneIcon from "@mui/icons-material/PlaceTwoTone";
-import { Loogotipo } from "../../components/Logotipo";
-import { Container, CssBaseline } from "@mui/material";
-import { Link } from "react-router-dom";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import Container from "@mui/material/Container";
+import CssBaseline from "@mui/material/CssBaseline";
+import Alert from "@mui/material/Alert";
+
+import LockTwoToneIcon from "@mui/icons-material/Lock";
+import AccountCircleTwoToneIcon from "@mui/icons-material/AccountCircle";
+
 
 export function RegisterPage() {
-  const [age, setAge] = useState("");
-  const [isNameFocused, setNameFocused] = useState(false);
-  const [isUfFocused, setUfFocused] = useState(false);
-  const [isCityFocused, setCityFocused] = useState(false);
   const [isEmailFocused, setEmailFocused] = useState(false);
   const [isPasswordFocused, setPasswordFocused] = useState(false);
   const [isConfirmPasswordFocused, setConfirmPasswordFocused] = useState(false);
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [passwordMismatchError, setPasswordMismatchError] = useState("");
-  const [isFormSubmitted, setFormSubmitted] = useState(false);
   const [isFormSuccess, setFormSuccess] = useState(false);
+  const [errorMessage, seterrorMessage] = useState("");
 
   const auth = getAuth();
-  const user = auth.currentUser;
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   const handleFocus = (stateSetter) => {
     stateSetter(true);
@@ -52,56 +40,33 @@ export function RegisterPage() {
   };
 
   const handleCreateAccount = () => {
-    if (password !== passwordConfirmation) {
-      setPasswordMismatchError("As senhas não coincidem. Por favor, tente novamente.");
-      setFormSubmitted(true);
-      return;
-    }
-  
-    setPasswordMismatchError("");
-    setFormSubmitted(true);
+    seterrorMessage("");
+    setFormSuccess(false);
 
-    if (name.trim() === "") {
-     
+    if (password !== passwordConfirmation) {
+      seterrorMessage("As senhas não coincidem. Por favor, tente novamente.");
       setFormSuccess(false);
       return;
     }
   
-    createUserWithEmailAndPassword(auth, email, password,name)
-      .then((userCredential) => {
-        const createdUser = userCredential.user;
-  
-       
-        updateProfile(createdUser, {
-          displayName: name
-        })
-          .then(() => {
-            setFormSuccess(true);
-            console.log(createdUser)
-        
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            setFormSuccess(false);
-            
-          });
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        setFormSuccess(true);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        setFormSuccess(false);
-        
+        if(error.code === "auth/invalid-email"){
+          seterrorMessage('O e-mail informado é inválido!');
+        }
+        else{
+          seterrorMessage('Aconteceu um erro inesperado, tente novamente!');
+        }
+        setFormSuccess(false);        
       });
   };
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
-
-  const handleNameChange = (event) => {
-    setName(event.target.value)
-  }
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
@@ -111,31 +76,11 @@ export function RegisterPage() {
     setPasswordConfirmation(event.target.value);
   };
 
-  const renderFormSuccessMessage = () => {
-    if (isFormSubmitted && isFormSuccess) {
-      return (
-        <Typography variant="body2" sx={{ color: "#4caf50", marginTop: "8px" }}>
-          Formulário enviado com sucesso!
-        </Typography>
-      );
-    }
-    return null;
-  };
-  
-  const renderFormErrorMessage = () => {
-    if (isFormSubmitted && !isFormSuccess) {
-      return (
-        <Typography variant="body2" sx={{ color: "red", marginTop: "8px" }}>
-          Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.
-        </Typography>
-      );
-    }
-    return null;
-  };
 
   const card = (
     <React.Fragment>
       <CardContent style={{ color: "#424242" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         <Loogotipo />
         <br />
         <Typography
@@ -148,72 +93,8 @@ export function RegisterPage() {
           Registrar sua Empresa
         </Typography>
         <br />
-        <br />
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <Icon>
-            <AccountBalanceIcon sx={{ fontSize: 26, color: isNameFocused ? "#2196f3" : "#424242" }} />
-          </Icon>
-          <Typography variant="body2">
-            <TextField
-              sx={{ minWidth: 328 }}
-              id="standard-basic"
-              label="Nome da Empresa"
-              variant="standard"
-              onFocus={() => handleFocus(setNameFocused)}
-              onBlur={() => handleBlur(setNameFocused)}
-              onChange={handleNameChange}
-            />
-          </Typography>
-        </Box>
-        <br />
-        <Typography variant="h5" component="div">
-          <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Icon>
-              <PlaceTwoToneIcon sx={{ fontSize: 27, color: isCityFocused && isUfFocused ? "#0277bd" : "#424242" }} />
-            </Icon>
-            <FormControl variant="standard" sx={{ minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-standard-label">UF</InputLabel>
-
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                value={age}
-                onChange={handleChange}
-                label="Age"
-                onFocus={() => handleFocus(setUfFocused)}
-                onBlur={() => handleBlur(setUfFocused)}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Text1</MenuItem>
-                <MenuItem value={20}>Teste2</MenuItem>
-                <MenuItem value={30}>teste3</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl variant="filled" sx={{ minWidth: 200 }}>
-              <InputLabel id="demo-simple-select-filled-label">Cidade</InputLabel>
-              <Select
-                labelId="demo-simple-select-filled-label"
-                id="demo-simple-select-filled"
-                value={age}
-                onChange={handleChange}
-                onFocus={() => handleFocus(setCityFocused)}
-                onBlur={() => handleBlur(setCityFocused)}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Text1</MenuItem>
-                <MenuItem value={20}>Teste2</MenuItem>
-                <MenuItem value={30}>teste3</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Typography>
-        <br />
-        <br />
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <br />        
+        <Box sx={{ display: "flex", alignContent: "center", gap: "8px" }}>
           <Icon>
             <AccountCircleTwoToneIcon sx={{ fontSize: 26, color: isEmailFocused ? "#0277bd" : "#424242" }} />
           </Icon>
@@ -226,6 +107,7 @@ export function RegisterPage() {
               onFocus={() => handleFocus(setEmailFocused)}
               onBlur={() => handleBlur(setEmailFocused)}
               onChange={handleEmailChange}
+              autoFocus
             />
           </Typography>
         </Box>
@@ -248,7 +130,7 @@ export function RegisterPage() {
           </Typography>
         </Box>
         <br />
-        <Box sx={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 500 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <Icon>
             <LockTwoToneIcon sx={{ fontSize: 26, color: isConfirmPasswordFocused ? "#2196f3" : "#424242" }} />
           </Icon>
@@ -265,12 +147,11 @@ export function RegisterPage() {
             />
           </Typography>
         </Box>
-        {passwordMismatchError && (
-          <Typography sx={{ color: "red", marginTop: "8px" }}>{passwordMismatchError}</Typography>
-        )}
-        {isFormSubmitted && isFormSuccess && renderFormSuccessMessage()}
-        {isFormSubmitted && !isFormSuccess && renderFormErrorMessage()}
         <br />
+        <Alert severity="success" sx={{display: isFormSuccess && errorMessage === "" ? 'flex': 'none' }}>Cadastro efetuado com sucesso!</Alert>
+        <Alert severity="error" sx={{display: !isFormSuccess && errorMessage !== "" ? 'flex': 'none' }}>{errorMessage}</Alert>
+        <br />
+        </Box>
       </CardContent>
       <CardActions>
         <Button size="small">
@@ -288,12 +169,10 @@ export function RegisterPage() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", width: 400 }}>
-          <Card variant="outlined" sx={{ transformStyle: "preserve-3d", boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.3)" }}>
+      <Box sx={{ marginTop: 20, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <Card variant="outlined" sx={{ transformStyle: "preserve-3d", boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.3)", padding: 3 }}>
             {card}
           </Card>
-        </Box>
       </Box>
     </Container>
   );
