@@ -64,19 +64,6 @@ export function RegisterPage() {
       });
   };
 
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = (event) => {
-    setPasswordConfirmation(event.target.value);
-  };
-
-
   const card = (
     <React.Fragment>
       <CardContent style={{ color: "#424242" }}>
@@ -106,7 +93,10 @@ export function RegisterPage() {
               variant="standard"
               onFocus={() => handleFocus(setEmailFocused)}
               onBlur={() => handleBlur(setEmailFocused)}
-              onChange={handleEmailChange}
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value)                
+              }}
               autoFocus
             />
           </Typography>
@@ -124,8 +114,12 @@ export function RegisterPage() {
               variant="standard"
               onFocus={() => handleFocus(setPasswordFocused)}
               onBlur={() => handleBlur(setPasswordFocused)}
-              onChange={handlePasswordChange}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+               }}
               type="password"
+
             />
           </Typography>
         </Box>
@@ -142,7 +136,10 @@ export function RegisterPage() {
               variant="standard"
               onFocus={() => handleFocus(setConfirmPasswordFocused)}
               onBlur={() => handleBlur(setConfirmPasswordFocused)}
-              onChange={handleConfirmPasswordChange}
+              value={passwordConfirmation}
+              onChange={(event) => {
+                setPasswordConfirmation(event.target.value);
+               }}
               type="password"
             />
           </Typography>
