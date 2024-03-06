@@ -20,6 +20,30 @@ export function RegisterPage() {
   const isLoggingIn = navigation.formData?.get("email") != null;
   const actionData = useActionData();
 
+  async function registerAction({ request }) {
+    const formData = await request.formData();
+  
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const passwordConfirmation = formData.get("passwordConfirmation");
+    console.log("efetuando cadastro", email, password, passwordConfirmation)
+  
+    if (password !== passwordConfirmation) {
+      return { error: "As senhas não coincidem. Por favor, tente novamente." };
+    }
+  
+    try {
+      await authProvider.signup(email, password);
+    } catch (error) {
+      if (errorMessages[error.code]) {
+        return { error: errorMessages[error.code] };
+      }
+      console.log(error);
+      return { error: "Falha ao tentar fazer login!" }
+    }
+    return redirect("/app/dashboard");
+  }
+
 
   return (
     <React.Fragment>
