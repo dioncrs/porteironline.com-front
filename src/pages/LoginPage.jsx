@@ -38,19 +38,19 @@ export function LoginPage() {
             if (errorFirebase) {
                 setErrorMessage(errorFirebase);
             }
-            else{
+            else {
                 console.log(error);
                 setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
-            }        
+            }
         }
-        finally{
+        finally {
             setIsLoggingIn(false);
         }
     };
 
     return (
         <React.Fragment>
-            <Card variant="elevation" sx={{ padding: "5px 30px" }}>
+            <Card variant="elevation" elevation={6} sx={{ padding: "5px 30px" }}>
                 <Form method="post" replace>
                     <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, width: 314 }}>
@@ -58,44 +58,42 @@ export function LoginPage() {
                                 <Logotipo />
                             </Box>
                             <Typography variant="h5">Entrar</Typography>
-                            <TextField 
-                            autoFocus 
-                            name="email" 
-                            id="email" 
-                            label="Email" 
-                            variant="outlined" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            fullWidth />
+                            <TextField
+                                autoFocus
+                                name="email"
+                                id="email"
+                                label="Email"
+                                variant="outlined"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                fullWidth />
 
-                            <TextField 
-                            type="password" 
-                            name="password" 
-                            id="password" 
-                            label="Senha" 
-                            variant="outlined" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            fullWidth />
-
-
-                            {errorMessage && !isLoggingIn ? (<Alert severity="error">{errorMessage}</Alert>) : null}
-
-                            <Button fullWidth onClick={handleLogin} variant="contained" sx={{ margin: "24px 0 0px 0px" }}>
+                            <TextField
+                                type="password"
+                                name="password"
+                                id="password"
+                                label="Senha"
+                                variant="outlined"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                fullWidth />
+                        </Box>
+                        <Typography align="right">
+                            <Link variant="subtitle2" href="/recover-password" underline="hover">Esqueceu sua senha?</Link>
+                        </Typography>                        
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: 314, gap: 2, mt:2 }}>
+                            
+                            <Button disabled={isLoggingIn} fullWidth onClick={handleLogin} variant="contained" sx={{ mt: 1 }}>
                                 Entrar
                             </Button>
-                            <Button fullWidth onClick={handleLogin} variant="text" color="info" sx={{ margin: "0px 0 12px" }}>
+                            <Button disabled={isLoggingIn} fullWidth href="/registro" variant="outlined">
+                                <Typography variant="button" align="center">
                                 Chegando agora? Comece uma avaliação gratuita
+                                </Typography>
                             </Button>
-                            <Divider flexItem variant="fullWidth" />
-
-                            <Typography variant="subtitle2">Não possui cadastro? &nbsp;
-                                <Link underline="hover" href="/registro">Cadastre sua empresa</Link></Typography>
-
-
-                            <Link variant="subtitle2" href="/recover-password" underline="hover" sx={{ alignItems: 'left' }}>Esqueceu sua senha?</Link>
-
-
+                            {errorMessage && !isLoggingIn ? (<Alert sx={{width: 314}} severity="error">{errorMessage}</Alert>) : null}
+                        </Box>
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", width: 314, mt:2 }}>
                             {isLoggingIn ? (<CircularProgress />) : null}
                         </Box>
                     </CardContent>

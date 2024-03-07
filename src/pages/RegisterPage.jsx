@@ -14,39 +14,37 @@ import Link from "@mui/material/Link"
 
 import { CircularProgress, Divider } from "@mui/material";
 import { useAuth } from "@/hooks/useAuth";
+import { errorMessages } from "@/plugins/firebase";
 
 export function RegisterPage() {
+  const [displayName, setdisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [displayName, setdisplayName] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const { login } = useAuth();
+  const { register } = useAuth();
 
 
-  async function registerAction({ request }) {
-    const formData = await request.formData();
-  
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const passwordConfirmation = formData.get("passwordConfirmation");
-    console.log("efetuando cadastro", email, password, passwordConfirmation)
-  
-    if (password !== passwordConfirmation) {
-      return { error: "As senhas não coincidem. Por favor, tente novamente." };
-    }
+  const handleRegister = async (e) => {
+    e.preventDefault();  
   
     try {
-      await authProvider.signup(email, password);
-    } catch (error) {
-      if (errorMessages[error.code]) {
-        return { error: errorMessages[error.code] };
+      setIsLoggingIn(true);
+      await register({ email, password, displayName });
+
+  } catch (error) {
+      const errorFirebase = errorMessages[error.code];
+      if (errorFirebase) {
+          setErrorMessage(errorFirebase);
       }
-      console.log(error);
-      return { error: "Falha ao tentar fazer login!" }
-    }
-    return redirect("/app/dashboard");
+      else {
+          console.log(error);
+          setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
+      }
+  }
+  finally {
+      setIsLoggingIn(false);
+  }
   }
 
 
@@ -60,7 +58,7 @@ export function RegisterPage() {
                             <Logotipo/>
                             </Box>
               <Typography variant="h5">
-                Primeiro vamos cadastrar seu usuário.
+                Vamos cadastrar seu usuário.
               </Typography>
               <TextField
                 fullWidth
@@ -91,21 +89,13 @@ export function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <TextField
-                fullWidth
-                id="passwordConfirmation"
-                name="passwordConfirmation"
-                label="Confirmação de Senha"
-                variant="outlined"
-                type="password"
-                value={passwordConfirmation}
-                onChange={(e) => setPasswordConfirmation(e.target.value)}
-              />
-              {errorMessage && !isLoggingIn ? (<Alert severity="error">{errorMessage}</Alert>) : null}
 
-              <Button fullWidth type="submit" variant="contained" sx={{ margin: "24px 0 12px" }}>
+              <Button fullWidth onClick={handleRegister} variant="contained" sx={{ margin: "24px 0 12px" }}>
                 Cadastrar
               </Button>
+              
+              {errorMessage && !isLoggingIn ? (<Alert severity="error">{errorMessage}</Alert>) : null}
+              {isLoggingIn ? (<CircularProgress />) : null}
 
               <Divider flexItem variant="fullWidth" />
               <Box alignItems="center" display="flex" flexDirection="column" >
@@ -123,7 +113,7 @@ export function RegisterPage() {
                 </Typography>
                
               </Box>
-              {isLoggingIn ? (<CircularProgress />) : null}
+              
             </Box>
           </Form>
         </CardContent>

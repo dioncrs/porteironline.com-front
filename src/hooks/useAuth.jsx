@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 import { auth } from "@/plugins/firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence, updateProfile } from "firebase/auth";
 
 const AuthContext = createContext();
 
@@ -16,6 +16,16 @@ export const AuthProvider = ({ children }) => {
     redirect("/dashboard");
   };
 
+  const register = async ({email, password, displayName}) => {
+    const response = await setPersistence(auth, browserLocalPersistence).then(() => createUserWithEmailAndPassword(auth, email, password))
+    await updateProfile(auth.currentUser, {
+      displayName
+    })
+    
+    setUser(auth.currentUser);
+    redirect("/dashboard");
+  };
+
   const logout = async () => {
     await signOut(auth);
     setUser(null);
@@ -26,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     () => ({
       user,
       login,
+      register,
       logout
     }),
     [user]
