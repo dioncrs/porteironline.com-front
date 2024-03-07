@@ -9,7 +9,8 @@
         "@forms/*": ["src/forms/*"],
         "@providers/*": ["src/providers/*"],
         "@utils/*": ["src/utils/*"],
-        "@context/*": ["src/context/*"]
+        "@context/*": ["src/context/*"],
+        "@plugins/*": ["src/plugins/*"]
       }
     }
   }

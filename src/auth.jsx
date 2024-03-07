@@ -1,4 +1,4 @@
-import { auth } from "./firebase";
+import { auth } from "./plugins/firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 export const authProvider = {

@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 
 
-import { auth } from "@/firebase";
+import { auth } from "@/plugins/firebase";
 import { CircularProgress, Divider } from "@mui/material";
 
 export function confirmAction(){

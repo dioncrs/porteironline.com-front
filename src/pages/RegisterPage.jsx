@@ -12,13 +12,18 @@ import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import Link from "@mui/material/Link"
 
-import { auth } from "@/firebase";
 import { CircularProgress, Divider } from "@mui/material";
+import { useAuth } from "@/hooks/useAuth";
 
 export function RegisterPage() {
-  const navigation = useNavigation();
-  const isLoggingIn = navigation.formData?.get("email") != null;
-  const actionData = useActionData();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
+  const [displayName, setdisplayName] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useAuth();
+
 
   async function registerAction({ request }) {
     const formData = await request.formData();
@@ -55,15 +60,26 @@ export function RegisterPage() {
                             <Logotipo/>
                             </Box>
               <Typography variant="h5">
-                Cadastre sua Empresa
+                Primeiro vamos cadastrar seu usuário.
               </Typography>
+              <TextField
+                fullWidth
+                id="displayName"
+                name="displayName"
+                label="Seu nome"
+                variant="outlined"
+                value={displayName}
+                onChange={(e) => setdisplayName(e.target.value)}
+                autoFocus
+              />
               <TextField
                 fullWidth
                 id="email"
                 name="email"
                 label="Email"
                 variant="outlined"
-                autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 fullWidth
@@ -72,6 +88,8 @@ export function RegisterPage() {
                 label="Senha"
                 variant="outlined"
                 type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <TextField
                 fullWidth
@@ -80,8 +98,10 @@ export function RegisterPage() {
                 label="Confirmação de Senha"
                 variant="outlined"
                 type="password"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
               />
-              {actionData && actionData.error && !isLoggingIn ? (<Alert severity="error">{actionData.error}</Alert>) : null}
+              {errorMessage && !isLoggingIn ? (<Alert severity="error">{errorMessage}</Alert>) : null}
 
               <Button fullWidth type="submit" variant="contained" sx={{ margin: "24px 0 12px" }}>
                 Cadastrar

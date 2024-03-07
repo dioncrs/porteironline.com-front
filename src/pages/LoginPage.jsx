@@ -16,7 +16,7 @@ import {
     Link
 } from "@mui/material";
 import { useAuth } from '@/hooks/useAuth';
-import { errorMessages } from "@/firebase";
+import { errorMessages } from "@/plugins/firebase";
 
 
 
@@ -66,7 +66,7 @@ export function LoginPage() {
                             variant="outlined" 
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            fullWidth={true} />
+                            fullWidth />
 
                             <TextField 
                             type="password" 
@@ -76,18 +76,21 @@ export function LoginPage() {
                             variant="outlined" 
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            fullWidth={true} />
+                            fullWidth />
 
 
                             {errorMessage && !isLoggingIn ? (<Alert severity="error">{errorMessage}</Alert>) : null}
 
-                            <Button fullWidth={true} onClick={handleLogin} variant="contained" sx={{ margin: "24px 0 12px" }}>
+                            <Button fullWidth onClick={handleLogin} variant="contained" sx={{ margin: "24px 0 0px 0px" }}>
                                 Entrar
+                            </Button>
+                            <Button fullWidth onClick={handleLogin} variant="text" color="info" sx={{ margin: "0px 0 12px" }}>
+                                Chegando agora? Comece uma avaliação gratuita
                             </Button>
                             <Divider flexItem variant="fullWidth" />
 
                             <Typography variant="subtitle2">Não possui cadastro? &nbsp;
-                                <Link fullWidth={true} underline="hover" href="/registro">Cadastre sua empresa</Link></Typography>
+                                <Link underline="hover" href="/registro">Cadastre sua empresa</Link></Typography>
 
 
                             <Link variant="subtitle2" href="/recover-password" underline="hover" sx={{ alignItems: 'left' }}>Esqueceu sua senha?</Link>

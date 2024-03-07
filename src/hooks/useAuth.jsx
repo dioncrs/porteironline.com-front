@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
-import { auth } from "@/firebase";
+import { auth } from "@/plugins/firebase";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 const AuthContext = createContext();
