@@ -1,12 +1,9 @@
 import React, { useState } from "react"
-import { Form, useActionData, useNavigation } from "react-router-dom";
 import { Logotipo } from "@/components/Logotipo";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import KeyIcon from '@mui/icons-material/Key';
+
 import {
     Button,
     Typography,
-    Divider,
     Box,
     Card,
     CardContent,
@@ -16,7 +13,7 @@ import {
     Link
 } from "@mui/material";
 import { useAuth } from '@/hooks/useAuth';
-import { errorMessages } from "@/plugins/firebase";
+import { errorMessages } from "@/services/UserService";
 
 
 
@@ -51,7 +48,6 @@ export function LoginPage() {
     return (
         <React.Fragment>
             <Card variant="elevation" elevation={6} sx={{ padding: "5px 30px" }}>
-                <Form method="post" replace>
                     <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, width: 314 }}>
                             <Box padding={3}>
@@ -97,10 +93,6 @@ export function LoginPage() {
                             {isLoggingIn ? (<CircularProgress />) : null}
                         </Box>
                     </CardContent>
-
-
-
-                </Form>
             </Card>
         </React.Fragment>
     );

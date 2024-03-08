@@ -1,33 +1,20 @@
-import { createContext, useContext, useMemo } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import { useLocalStorage } from "./useLocalStorage";
-import { auth } from "@/plugins/firebase";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, setPersistence, browserLocalPersistence, updateProfile } from "firebase/auth";
+import { createContext, useContext, useMemo, useState } from "react";
+import { redirect } from "react-router-dom";
+import { signIn, logoutUser } from "@/services/UserService";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useLocalStorage("user", null);
+  const [user, setUser] = useState(null);
 
-  const login = async ({email, password}) => {
-    const response = await setPersistence(auth, browserLocalPersistence).then(() => signInWithEmailAndPassword(auth, email, password))
-    
-    setUser(response.user);
-    redirect("/dashboard");
-  };
-
-  const register = async ({email, password, displayName}) => {
-    const response = await setPersistence(auth, browserLocalPersistence).then(() => createUserWithEmailAndPassword(auth, email, password))
-    await updateProfile(auth.currentUser, {
-      displayName
-    })
-    
-    setUser(auth.currentUser);
+  const login = async ({email, password}) => {    
+    const currentUser = await signIn(email, password);    
+    setUser(currentUser);
     redirect("/dashboard");
   };
 
   const logout = async () => {
-    await signOut(auth);
+    await logoutUser(auth);
     setUser(null);
     redirect("/login");
   };
@@ -36,8 +23,8 @@ export const AuthProvider = ({ children }) => {
     () => ({
       user,
       login,
-      register,
-      logout
+      logout,
+      setUser
     }),
     [user]
   );
