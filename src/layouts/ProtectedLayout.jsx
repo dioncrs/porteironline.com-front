@@ -1,8 +1,8 @@
-import { Link, Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { Link, Navigate, Outlet, useOutletContext } from "react-router-dom";
+
 
 export const ProtectedLayout = () => {
-  const { user } = useAuth();
+  const [ user, setUser ] = useOutletContext();
 
   if (!user) {
     return <Navigate to="/login" />;
@@ -14,7 +14,7 @@ export const ProtectedLayout = () => {
         <Link to="/dashboard">Settings</Link>
         <Link to="/profile">Profile</Link>
       </nav>
-      <Outlet />
+      <Outlet context={[user, setUser]} />
     </div>
   )
 };

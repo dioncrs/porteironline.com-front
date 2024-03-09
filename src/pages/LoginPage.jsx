@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { Logotipo } from "@/components/Logotipo";
 
 import {
@@ -12,33 +12,25 @@ import {
     CircularProgress,
     Link
 } from "@mui/material";
-import { useAuth } from '@/hooks/useAuth';
-import { errorMessages } from "@/services/UserService";
-
-
+import { signIn } from "@/services/UserService"
+import { useOutletContext } from "react-router-dom";
 
 export function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const { login } = useAuth();
+    const [user, setUser] = useOutletContext();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             setIsLoggingIn(true);
-            await login({ email, password });
+            const user = await signIn(email, password);
+            setUser(user);
 
         } catch (error) {
-            const errorFirebase = errorMessages[error.code];
-            if (errorFirebase) {
-                setErrorMessage(errorFirebase);
-            }
-            else {
-                console.log(error);
-                setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
-            }
+            setErrorMessage(error);
         }
         finally {
             setIsLoggingIn(false);
@@ -46,7 +38,6 @@ export function LoginPage() {
     };
 
     return (
-        <React.Fragment>
             <Card variant="elevation" elevation={6} sx={{ padding: "5px 30px" }}>
                     <CardContent>
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, width: 314 }}>
@@ -94,6 +85,5 @@ export function LoginPage() {
                         </Box>
                     </CardContent>
             </Card>
-        </React.Fragment>
     );
 }

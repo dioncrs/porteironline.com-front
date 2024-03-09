@@ -1,24 +1,24 @@
-import { Suspense } from "react";
-import { useLoaderData, useOutlet, Await } from "react-router-dom";
-import Alert from "@mui/material/Alert";
-import { AuthProvider } from "@/hooks/useAuth";
+import { Fragment, Suspense, useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 import { CircularProgress } from "@mui/material";
 import { Centralize } from "@/components/Centralize";
+import { auth } from "@/plugins/firebase";
 
 export const AuthLayout = () => {
-  const outlet = useOutlet();
+  const [ user, setUser ] = useState(null);
+  const [isLoading, setIsLoading] = useState(true)
 
-  const { userPromise } = useLoaderData();
+  const checkUser = async() =>{
+    await auth.authStateReady();
+    setUser(auth.currentUser.uid);
+    setIsLoading(false)
+    }
+
+    useEffect(() => {checkUser()}, [user, setUser]);
 
   return (
-    <Suspense fallback={<Centralize> <CircularProgress /></Centralize>}>
-      <Await
-        resolve={userPromise}
-        errorElement={<Centralize><Alert severity="error">Ops! Algo deu errado no carregamento</Alert></Centralize>}
-        children={(user) => (
-          <AuthProvider userData={user}>{outlet}</AuthProvider>
-        )}
-      />
-    </Suspense>
-  );
+    <Fragment>
+    {isLoading ? (<Centralize> <CircularProgress /></Centralize>) : (<Outlet context={[user, setUser]}></Outlet>)}
+    </Fragment>
+  )
 };

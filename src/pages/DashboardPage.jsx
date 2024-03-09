@@ -1,24 +1,25 @@
-import { useAuth } from "@/hooks/useAuth";
+import useAppContext from "@/hooks/useAppContext";
+import { logoutUser } from "@/services/UserService";
 import { Button } from "@mui/material";
-import React from "react"
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 
 export function Dashboard() {
-    const { user, logout } = useAuth();
+    const [ user, setUser ] = useOutletContext();
 
     async function handleLogout(){
-        await logout()
+        await logoutUser()
+        setUser(null)
     }
 
     return (
-        <React.Fragment>
+        <>
             <h1>Dashboard</h1>
             Bem vindo: {user.email}
             Bem vindo: {user.displayName}
             <Link to="/">Home</Link>
             <Link to="/confirmacao">Confirmacao</Link>
         <Button onClick={handleLogout}>Log Out</Button>
-        </React.Fragment>
+        </>
     )
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Logotipo } from "@/components/Logotipo";
 
 import Card from "@mui/material/Card";
@@ -11,10 +11,13 @@ import Alert from "@mui/material/Alert";
 import Link from "@mui/material/Link"
 
 import { CircularProgress, Divider, Step, StepContent, StepLabel, Stepper } from "@mui/material";
-import { useAuth } from "@/hooks/useAuth";
 
-import { createUser, updateUserProfile, errorMessages } from "@/services/UserService";
+
 import { createCompany } from "@/services/CompanyService";
+import { createUser, updateUserProfile} from '@/services/UserService'
+import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
+import { auth } from "@/plugins/firebase";
+
 
 export function RegisterPage() {
   const [displayName, setDisplayName] = useState("");
@@ -24,8 +27,9 @@ export function RegisterPage() {
   const [cnpj, setCnpj] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [activeStep, setActiveStep] = useState(0)
-  const { setUser } = useAuth();
+  const navigate = useNavigate();
+  const [activeStep, setActiveStep] = useState(0);
+  const [ user, setUser ] = useOutletContext();
 
 
   const handleRegisterUser = async (e) => {
@@ -33,19 +37,10 @@ export function RegisterPage() {
 
     try {
       setIsLoggingIn(true);
-      const currentUser = await createUser(email, password);      
-      setUser(currentUser);
+      await createUser(email, password);      
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
     } catch (error) {
-      const errorFirebase = errorMessages[error.code];
-      if (errorFirebase) {
-        setErrorMessage(errorFirebase);
-      }
-      else {
-        console.log(error);
-        setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
-      }
+      setErrorMessage(error);      
     }
     finally {
       setIsLoggingIn(false);
@@ -56,19 +51,10 @@ export function RegisterPage() {
     e.preventDefault();
     try {
       setIsLoggingIn(true);
-      const currentUser = await updateUserProfile({ displayName });
-      setUser(currentUser);
+      await updateUserProfile({ displayName });
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-
     } catch (error) {
-      const errorFirebase = errorMessages[error.code];
-      if (errorFirebase) {
-        setErrorMessage(errorFirebase);
-      }
-      else {
-        console.log(error);
-        setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
-      }
+      setErrorMessage(error);   
     }
     finally {
       setIsLoggingIn(false);
@@ -79,27 +65,18 @@ export function RegisterPage() {
     e.preventDefault();
 
     try {
-      setIsLoggingIn(true);
-      createCompany({name: companyName});
-
+      setIsLoggingIn(true);      
+      await createCompany({name: companyName, cnpj: cnpj, userAdminId: auth.currentUser.uid});
+      setUser(auth.currentUser);
+      setIsLoggingIn(false);
     } catch (error) {
-      const errorFirebase = errorMessages[error.code];
-      if (errorFirebase) {
-        setErrorMessage(errorFirebase);
-      }
-      else {
-        console.log(error);
-        setErrorMessage("Ops! Ocorreu uma falha inesperada ao fazer login, tente Novamente.");
-      }
-    }
-    finally {
+      setErrorMessage(JSON.stringify(error));
       setIsLoggingIn(false);
     }
   }
 
 
   return (
-    <React.Fragment>
       <Card variant="elevation" sx={{ padding: "5px 30px" }}>
         <CardContent>
             <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
@@ -201,6 +178,9 @@ export function RegisterPage() {
                         <Button disabled={isLoggingIn} fullWidth onClick={handleRegisterCompany} variant="contained" sx={{ margin: "24px 0 12px" }}>
                           Finalizar Cadastro
                         </Button>
+                        {user && (
+          <Navigate to="/dashboard" replace={true} />
+        )}
                       </Box>
                     </StepContent>
                   </Box>
@@ -220,6 +200,5 @@ export function RegisterPage() {
             </Box>
         </CardContent>
       </Card>
-    </React.Fragment>
   );
 }

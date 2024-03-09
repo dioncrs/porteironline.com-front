@@ -10,7 +10,8 @@
         "@providers/*": ["src/providers/*"],
         "@utils/*": ["src/utils/*"],
         "@context/*": ["src/context/*"],
-        "@plugins/*": ["src/plugins/*"]
+        "@plugins/*": ["src/plugins/*"],
+        "@hooks/*": ["src/hooks/*"]
       }
     }
   }

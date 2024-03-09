@@ -12,17 +12,19 @@ import { HomePage } from '@/pages/HomePage';
 import { RegisterPage } from '@/pages/RegisterPage';
 
 
-const getUserData = () =>
-    new Promise((resolve) => onAuthStateChanged(auth, (user) => {
-        resolve(user);
-    }));
-
+async function userLoader() {
+    const userPromise = new Promise(resolve => onAuthStateChanged(auth, (user) => resolve(user)));
+    console.log("Verificando user")
+    return defer({
+        userPromise,
+    });
+  }
 
 export const router = createBrowserRouter([
     {
         id: "root",
         path: "/",
-        loader: () => defer({ userPromise: getUserData() }),
+        loader: userLoader,
         Component: AuthLayout,
         children: [
             {

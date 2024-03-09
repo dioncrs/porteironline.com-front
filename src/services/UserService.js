@@ -5,11 +5,10 @@ import {
     signOut,
     setPersistence,
     browserLocalPersistence,
-    updateProfile
+    updateProfile,
+    onAuthStateChanged
 } from "firebase/auth";
-
-
-
+import handleError from "@/utils/raiseError";
 
 export const signIn = async (email, password) => {
     try {
@@ -17,9 +16,8 @@ export const signIn = async (email, password) => {
         return auth.currentUser;
     } catch (e) {
         console.error("Erro ao fazer login: ", e);
-        throw e;
+        throw handleError(e);
     }
-
 }
 
 export const createUser = async (email, password) => {
@@ -28,9 +26,8 @@ export const createUser = async (email, password) => {
         return auth.currentUser;
     } catch (e) {
         console.error("Erro ao cadastrar novo usuário: ", e);
-        throw e;
+        throw handleError(e);
     }
-
 }
 
 export const updateUserProfile = async (profile) => {
@@ -39,19 +36,23 @@ export const updateUserProfile = async (profile) => {
         return auth.currentUser;
     } catch (e) {
         console.error("Erro ao atualizar perfil do usuário: ", e);
-        throw e;
+        throw handleError(e);
     }
 }
 
-export const logoutUser = async () => {
-    await signOut(auth);
+export const checkUser = async () =>{
+    console.log('Check User');
+    return auth.onAuthStateChanged((user) => {
+        console.log(user)
+          return user;
+      });
 }
 
-export const errorMessages = {
-    "auth/invalid-email": 'O e-mail informado é inválido!',
-    "auth/user-not-found": 'Email não encontrado!',
-    "auth/weak-password": 'Senha Fraca! A senha deve ter ao menos 6 caracteres!',
-    "auth/email-already-in-use": 'Esse e-mail já consta como cadastrado no sistema!',
-    "auth/wrong-password": "Senha incorreta!",
-    "auth/missing-password": "Senha não informada!"
-  }
+export const logoutUser = async () => {
+    try {
+        await signOut(auth);        
+    } catch (error) {
+        console.error("Erro ao fazer logout do usuário: ", e);
+        throw handleError(e);
+    }
+}
