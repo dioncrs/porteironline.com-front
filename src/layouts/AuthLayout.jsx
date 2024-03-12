@@ -1,6 +1,6 @@
 import { Fragment, Suspense, useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import { CircularProgress } from "@mui/material";
+import { Backdrop, CircularProgress } from "@mui/material";
 import { Centralize } from "@/components/Centralize";
 import { auth } from "@/plugins/firebase";
 
@@ -10,7 +10,7 @@ export const AuthLayout = () => {
 
   const checkUser = async() =>{
     await auth.authStateReady();
-    setUser(auth.currentUser.uid);
+    setUser(auth.currentUser);
     setIsLoading(false)
     }
 
@@ -18,7 +18,12 @@ export const AuthLayout = () => {
 
   return (
     <Fragment>
-    {isLoading ? (<Centralize> <CircularProgress /></Centralize>) : (<Outlet context={[user, setUser]}></Outlet>)}
+    {isLoading ? (<Backdrop
+  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+  open={isLoading}
+>
+  <CircularProgress color="inherit" />
+</Backdrop>) : (<Outlet context={[user, setUser]}></Outlet>)}
     </Fragment>
   )
 };

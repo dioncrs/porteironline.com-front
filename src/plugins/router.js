@@ -1,6 +1,4 @@
 import { createBrowserRouter, defer } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/plugins/firebase";
 
 import { ProtectedLayout } from "@/layouts/ProtectedLayout";
 import { AuthLayout } from "@/layouts/AuthLayout";
@@ -10,21 +8,14 @@ import { LoginPage } from '@/pages/LoginPage';
 import { Dashboard } from '@/pages/DashboardPage';
 import { HomePage } from '@/pages/HomePage';
 import { RegisterPage } from '@/pages/RegisterPage';
+import PersonPage from "@/pages/PersonPage";
+import VisitsPage from "@/pages/VisitsPage";
 
-
-async function userLoader() {
-    const userPromise = new Promise(resolve => onAuthStateChanged(auth, (user) => resolve(user)));
-    console.log("Verificando user")
-    return defer({
-        userPromise,
-    });
-  }
 
 export const router = createBrowserRouter([
     {
         id: "root",
         path: "/",
-        loader: userLoader,
         Component: AuthLayout,
         children: [
             {
@@ -50,6 +41,14 @@ export const router = createBrowserRouter([
                     {
                         path: "dashboard",
                         Component: Dashboard,
+                    },
+                    {
+                        path: "pessoas",
+                        Component: PersonPage,
+                    },
+                    {
+                        path: "visitas",
+                        Component: VisitsPage,
                     }
                 ]
             },

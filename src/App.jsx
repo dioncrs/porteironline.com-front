@@ -19,9 +19,9 @@ function App() {
   // }, [setUser]);
 
   return (
-    <Container>
+
         <RouterProvider router={router} fallbackElement={<p>Initial Load...</p>} />
-    </Container>
+
   )
 }
 

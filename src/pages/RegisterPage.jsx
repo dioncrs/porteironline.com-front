@@ -15,7 +15,7 @@ import { CircularProgress, Divider, Step, StepContent, StepLabel, Stepper } from
 
 import { createCompany } from "@/services/CompanyService";
 import { createUser, updateUserProfile} from '@/services/UserService'
-import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
+import { Navigate, useOutletContext } from "react-router-dom";
 import { auth } from "@/plugins/firebase";
 
 
@@ -27,7 +27,6 @@ export function RegisterPage() {
   const [cnpj, setCnpj] = useState("");
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [ user, setUser ] = useOutletContext();
 
@@ -36,6 +35,7 @@ export function RegisterPage() {
     e.preventDefault();
 
     try {
+      setErrorMessage("");  
       setIsLoggingIn(true);
       await createUser(email, password);      
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -50,6 +50,7 @@ export function RegisterPage() {
   const handleUpdateUserName = async (e) => {
     e.preventDefault();
     try {
+      setErrorMessage(""); 
       setIsLoggingIn(true);
       await updateUserProfile({ displayName });
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -65,6 +66,7 @@ export function RegisterPage() {
     e.preventDefault();
 
     try {
+      setErrorMessage(""); 
       setIsLoggingIn(true);      
       await createCompany({name: companyName, cnpj: cnpj, userAdminId: auth.currentUser.uid});
       setUser(auth.currentUser);
