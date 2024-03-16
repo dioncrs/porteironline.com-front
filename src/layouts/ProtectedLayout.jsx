@@ -62,11 +62,12 @@ export function ProtectedLayout() {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: 'border-box',
+            boxSizing: 'border-box'
           },
         }}
         variant="permanent"
         anchor="left"
+        elevation={6}
 
       >
         <Box padding="15px 0px">
@@ -114,9 +115,9 @@ export function ProtectedLayout() {
       </Drawer>
       <Box
         component="main"
-        sx={{ flexGrow: 1, bgcolor: 'background.default', pl: 1, pr: 1, minHeight: '100vh' }}
+        sx={{ flexGrow: 1, bgcolor: '#fff', p:1, minHeight: '100vh' }}
       >
-        <Paper elevation={1} sx={{ p: 2 }}><Outlet context={[user, setUser]} />
+        <Outlet context={[user, setUser]} />
           <Typography paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -143,7 +144,7 @@ export function ProtectedLayout() {
             tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
             eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
             posuere sollicitudin aliquam ultrices sagittis orci a.
-          </Typography></Paper>
+          </Typography>
 
 
       </Box>
